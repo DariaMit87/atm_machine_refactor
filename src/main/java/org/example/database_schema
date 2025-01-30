@@ -1,0 +1,38 @@
+CREATE DATABASE atmdb;
+
+\c atmdb;
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    card_number VARCHAR(50) UNIQUE NOT NULL,
+    pin VARCHAR(10) NOT NULL,
+    balance DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    role VARCHAR(20) CHECK (role IN ('customer', 'technician')) NOT NULL
+);
+
+
+CREATE TABLE transactions (
+    id SERIAL PRIMARY KEY,
+    userId INT REFERENCES users(id) ON DELETE CASCADE,
+    type VARCHAR(50) NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE resources (
+    id SERIAL PRIMARY KEY,
+    ink INT DEFAULT 100,
+    paper INT DEFAULT 100,
+    cash INT DEFAULT 1000,
+    software_update INT DEFAULT 100
+);
+
+
+INSERT INTO users (name, card_number, pin, balance, role) VALUES
+('john', 'card1', '1234', 500.0, 'customer'),
+('bill', 'card2', '5678', 100.0, 'customer'),
+('techguy', 'card0', '0000', 0.0, 'technician');
+
+INSERT INTO resources (id, ink, paper, cash, software_update)
+VALUES (1, 100, 100, 1000, 100);
