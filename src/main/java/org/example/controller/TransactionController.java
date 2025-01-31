@@ -4,8 +4,6 @@ import org.example.model.Transaction;
 import org.example.model.TransactionDAO;
 import org.example.model.User;
 import org.example.model.UserDAO;
-import org.example.model.Resources;
-import org.example.controller.ResourcesController;
 import java.util.List;
 
 public class TransactionController {
@@ -13,58 +11,77 @@ public class TransactionController {
     private final UserDAO userDAO = new UserDAO();
     private final ResourcesController resourcesController = new ResourcesController();
 
-    // Deposit funds into user account and update transaction history
+
     public boolean deposit(int userId, double amount) {
         User user = userDAO.getUserById(userId);
         if (user != null && amount > 0) {
             double newBalance = user.getBalance() + amount;
             userDAO.updateUserBalance(userId, newBalance);
             transactionDAO.addTransaction(userId, "Deposit", amount);
-            resourcesController.updateResourcesAfterTransaction();
-
-            // Notify ResourcesController to update resources after deposit (separate handling)
-            // ResourcesController.updateResourcesAfterTransaction();
+            resourcesController.updateResourcesAfterTransaction(amount, true);
 
             return true;
         }
         return false;
     }
 
-    // Withdraw funds from user account and update transaction history
+
     public boolean withdraw(int userId, double amount) {
         User user = userDAO.getUserById(userId);
         if (user != null && user.getBalance() >= amount && amount > 0) {
             double newBalance = user.getBalance() - amount;
             userDAO.updateUserBalance(userId, newBalance);
             transactionDAO.addTransaction(userId, "Withdrawal", amount);
-            resourcesController.updateResourcesAfterTransaction();
-
-            // Notify ResourcesController to update resources after withdrawal (separate handling)
-            // ResourcesController.updateResourcesAfterTransaction();
+            resourcesController.updateResourcesAfterTransaction(amount, false);
 
             return true;
         }
         return false;
     }
 
-    // Transfer funds between users and update transaction history
-    public boolean transfer(int senderId, int receiverId, double amount) {
+    // Transfer funds between users
+    public boolean transfer(int senderId, String receiverCardNumber, double amount) {
         User sender = userDAO.getUserById(senderId);
-        User receiver = userDAO.getUserById(receiverId);
-        if (sender != null && receiver != null && sender.getBalance() >= amount && amount > 0) {
-            userDAO.updateUserBalance(senderId, sender.getBalance() - amount);
-            userDAO.updateUserBalance(receiverId, receiver.getBalance() + amount);
-            transactionDAO.addTransaction(senderId, "Transfer to User " + receiverId, amount);
-            transactionDAO.addTransaction(receiverId, "Transfer from User " + senderId, amount);
-            resourcesController.updateResourcesAfterTransaction();
+        User receiver = userDAO.getUserByCardNumber(receiverCardNumber);
 
-            // Notify ResourcesController to update resources after transfer (separate handling)
-            // ResourcesController.updateResourcesAfterTransaction();
-
-            return true;
+        // Check if both users exist
+        if (sender == null || receiver == null) {
+            System.out.println("Invalid sender or recipient card number.");
+            return false;
         }
-        return false;
+
+        if (sender.getId() == receiver.getId()) {
+            System.out.println("You cannot transfer money to yourself.");
+            return false;
+        }
+
+        //Prevent transactions to technicians
+        if ("technician".equalsIgnoreCase(receiver.getRole())) {
+            System.out.println("Transfers to technicians are not allowed.");
+            return false;
+        }
+
+        // Check if the sender has enough balance
+        if (sender.getBalance() < amount || amount <= 0) {
+            System.out.println("Insufficient funds or invalid amount.");
+            return false;
+        }
+
+        // Update balances
+        double newSenderBalance = sender.getBalance() - amount;
+        double newReceiverBalance = receiver.getBalance() + amount;
+
+        userDAO.updateUserBalance(senderId, newSenderBalance);
+        userDAO.updateUserBalance(receiver.getId(), newReceiverBalance);
+
+        // Add transaction records
+        transactionDAO.addTransaction(senderId, "Transfer Sent", -amount);
+        transactionDAO.addTransaction(receiver.getId(), "Transfer Received", amount);
+        resourcesController.updateResourcesAfterTransaction(0, false);
+
+        return true;
     }
+
 
     // Get the list of transactions for a specific user
     public List<Transaction> getUserTransactions(int userId) {

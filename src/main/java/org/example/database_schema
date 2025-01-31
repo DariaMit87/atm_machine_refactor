@@ -28,10 +28,16 @@ CREATE TABLE resources (
     software_update INT DEFAULT 100
 );
 
+ SELECT * FROM users;
+ id |  name   | card_number | pin  | balance |    role
+----+---------+-------------+------+---------+------------
+  3 | techguy | card0       | 0000 |    0.00 | technician
+  2 | bill    | card2       | 5678 |  220.00 | customer
+  1 | john    | card1       | 1234 |  490.00 | customer
+  5 | dolores | card3       | 1122 |    0.00 | customer
+
 
 INSERT INTO users (name, card_number, pin, balance, role) VALUES
-('john', 'card1', '1234', 500.0, 'customer'),
-('bill', 'card2', '5678', 100.0, 'customer'),
 ('techguy', 'card0', '0000', 0.0, 'technician');
 
 INSERT INTO resources (id, ink, paper, cash, software_update)

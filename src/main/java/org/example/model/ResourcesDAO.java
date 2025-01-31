@@ -24,21 +24,20 @@ public class ResourcesDAO {
         return null; // If no result found, return null
     }
 
-    public boolean updateResources(Resources resources) {
+    public void updateResources(Resources resources) {
         String query = "UPDATE resources SET ink = ?, paper = ?, cash = ?, software_update = ? WHERE id = 1";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, resources.getInk());
             stmt.setInt(2, resources.getPaper());
-            stmt.setInt(3, resources.getCash());
+            stmt.setDouble(3, resources.getCash());
             stmt.setInt(4, resources.getSoftwareUpdate());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     // Refill resources to their default values

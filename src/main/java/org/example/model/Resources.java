@@ -3,19 +3,19 @@ package org.example.model;
 public class Resources {
     private int ink;
     private int paper;
-    private int cash;
+    private double cash;
     private int softwareUpdate;
 
     public Resources() {
         // Set default values
         this.ink = 100;
         this.paper = 100;
-        this.cash = 1000;
+        this.cash = 1000.0;
         this.softwareUpdate = 100;
     }
 
     // Add a constructor to initialize all resources
-    public Resources(int ink, int paper, int cash, int softwareUpdate) {
+    public Resources(int ink, int paper, double cash, int softwareUpdate) {
         this.ink = ink;
         this.paper = paper;
         this.cash = cash;
@@ -39,11 +39,11 @@ public class Resources {
         this.paper = paper;
     }
 
-    public int getCash() {
+    public double getCash() {
         return cash;
     }
 
-    public void setCash(int cash) {
+    public void setCash(double cash) {
         this.cash = cash;
     }
 
@@ -65,48 +65,5 @@ public class Resources {
         return ink == 0 || paper == 0 || softwareUpdate == 0 || cash == 0;
     }
 
-    // Deduct resources after transaction
-    public void deductResources() {
-        this.ink -= 2;
-        this.paper -= 2;
-        this.softwareUpdate -= 2;
-    }
-
-    // Deduct cash after a withdrawal and add cash after a deposit
-    public void adjustCash(int amount) {
-        this.cash -= amount;
-    }
-
-    public void depositCash(int amount) {
-        this.cash += amount;
-    }
-
-
-    private final ResourcesDAO resourcesDAO = new ResourcesDAO();
-
-    // Get current resource levels from the database
-    public void loadResources() {
-        Resources resourcesFromDB = resourcesDAO.getResources();
-        if (resourcesFromDB != null) {
-            this.ink = resourcesFromDB.getInk();
-            this.paper = resourcesFromDB.getPaper();
-            this.cash = resourcesFromDB.getCash();
-            this.softwareUpdate = resourcesFromDB.getSoftwareUpdate();
-        }
-    }
-
-    // Save current resource levels to the database
-    public void saveResources() {
-        resourcesDAO.updateResources(this);
-    }
-
-    // Refill resources back to default values
-    public void refillResources() {
-        this.ink = 100;
-        this.paper = 100;
-        this.cash = 1000;
-        this.softwareUpdate = 100;
-        resourcesDAO.refillResources();  // Save changes to the database
-    }
 }
 

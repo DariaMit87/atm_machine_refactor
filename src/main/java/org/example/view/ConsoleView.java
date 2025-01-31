@@ -104,6 +104,8 @@ public class ConsoleView {
             System.out.println("\nTechnician Menu:");
             System.out.println("1. View Resources");
             System.out.println("2. Refill Resources");
+            System.out.println("3. Add New User");
+            System.out.println("4. View all Users");
             System.out.println("0. Logout");
             System.out.print("Select an option: ");
 
@@ -117,6 +119,12 @@ public class ConsoleView {
                 case 2:
                     refillResources();
                     break;
+                case 3:
+                    addNewUser();
+                    break;
+                case 4:
+                    viewAllUsers();
+                    break;
                 case 0:
                     System.out.println("Logging out...");
                     loggedInUser = null;
@@ -128,7 +136,7 @@ public class ConsoleView {
     }
 
     private void checkBalance() {
-        double balance = userController.checkBalance(loggedInUser.getCardNumber());
+        double balance = userController.checkBalance(loggedInUser.getId());
         System.out.println("Your current balance: $" + balance);
     }
 
@@ -155,14 +163,16 @@ public class ConsoleView {
     }
 
     private void transferFunds() {
-        System.out.print("Enter recipient ID: ");
-        int receiverId = scanner.nextInt();
+        System.out.print("Enter recipient Card number: ");
+        String receiverCardNumber = scanner.nextLine();
+
         System.out.print("Enter amount to transfer: ");
         double amount = scanner.nextDouble();
-        if (transactionController.transfer(loggedInUser.getId(), receiverId, amount)) {
+
+        if (transactionController.transfer(loggedInUser.getId(), receiverCardNumber, amount)) {
             System.out.println("Transfer successful!");
         } else {
-            System.out.println("Transfer failed! Check your balance or recipient ID.");
+            System.out.println("Transfer failed");
         }
         displayResourcesStatus();
     }
@@ -180,7 +190,6 @@ public class ConsoleView {
         }
     }
 
-    // Display current resource status
     private void displayResourcesStatus() {
         Resources resources = resourcesController.getResources();
         if (resources.isLowOnResources()) {
@@ -191,7 +200,7 @@ public class ConsoleView {
         }
     }
 
-    // Technician's method to view resources
+
     private void viewResources() {
         Resources resources = resourcesController.getResources();
         System.out.println("Current ATM resources: ");
@@ -201,7 +210,7 @@ public class ConsoleView {
         System.out.println("Software Update: " + resources.getSoftwareUpdate());
     }
 
-    // Technician's method to refill resources
+
     private void refillResources() {
         if (resourcesController.refillResources()) {
             System.out.println("Resources have been successfully refilled!");
@@ -209,6 +218,47 @@ public class ConsoleView {
             System.out.println("Failed to refill resources.");
         }
     }
+
+    private void addNewUser() {
+        System.out.print("Enter new user's name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter new user's card number: ");
+        String cardNumber = scanner.nextLine();
+
+        System.out.print("Enter new user's PIN: ");
+        String pin = scanner.nextLine();
+
+        System.out.print("Enter initial balance: ");
+        double balance = scanner.nextDouble();
+        scanner.nextLine();
+
+        System.out.print("Enter role (customer/technician): ");
+        String role = scanner.nextLine();
+
+        userController.addUser(name, cardNumber, pin, balance, role);
+    }
+
+    private void viewAllUsers() {
+        List<User> users = userController.getAllUsers();
+
+        if (users.isEmpty()) {
+            System.out.println("No users found.");
+        } else {
+            System.out.println("\nList of Users:");
+            System.out.println("------------------------------------------");
+            for (User user : users) {
+                System.out.println("ID: " + user.getId());
+                System.out.println("Name: " + user.getName());
+                System.out.println("Card Number: " + user.getCardNumber());
+                System.out.println("Balance: $" + user.getBalance());
+                System.out.println("Role: " + user.getRole());
+                System.out.println("------------------------------------------");
+            }
+        }
+    }
+
+
 }
 
 

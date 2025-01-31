@@ -3,11 +3,11 @@ import org.example.DatabaseConfig;
 import org.example.model.User;
 import org.example.model.UserDAO;
 
-import org.example.view.ConsoleView;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.List;
 
 public class UserController {
     private UserDAO userDAO = new UserDAO();
@@ -35,25 +35,28 @@ public class UserController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null; // Return null if user not found
+        return null;
     }
 
-    public double checkBalance(String cardNumber) {
-        User user = userDAO.getUserByCardNumber(cardNumber);
+    public void addUser(String name, String cardNumber, String pin, double balance, String role) {
+        if (name.isEmpty() || cardNumber.isEmpty() || pin.isEmpty() || balance < 0 || role.isEmpty()) {
+            System.out.println("Invalid user details. Please try again.");
+            return;
+        }
+
+        User newUser = new User(0, name, cardNumber, pin, balance, role);
+        userDAO.addUser(newUser);
+        System.out.println("User added successfully.");
+    }
+
+    public double checkBalance(int id) {
+        User user = userDAO.getUserById(id);
         return (user != null) ? user.getBalance() : -1;
     }
 
-    public void updateBalance(int userid, double newBalance) {
-        userDAO.updateUserBalance(userid, newBalance);
+    public List<User> getAllUsers() {
+        return userDAO.getAllUsers();
     }
 
-    private String getUsernameById(int userid) {
-        for (User user : userDAO.getAllUsers()) {
-            if (user.getId() == userid) {
-                return user.getName();
-            }
-        }
-        return null;
-    }
 }
 

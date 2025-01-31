@@ -35,8 +35,6 @@ public class User {
     public double getBalance() { return balance; }
     public String getRole() { return role; }
 
-    public void setId(int id) { this.id = id; }
-    public void setBalance(double balance) { this.balance = balance; }
 }
 
 

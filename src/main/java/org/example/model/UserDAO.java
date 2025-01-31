@@ -8,13 +8,14 @@ import java.util.List;
 
 public class UserDAO {
     public void addUser(User user) {
-        String query = "INSERT INTO users (name, card_number, pin, balance, role) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO users (name, card_number, pin, balance, role) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, user.getName());
-            stmt.setString(2, user.getPin());
-            stmt.setString(3, user.getRole());
+            stmt.setString(2, user.getCardNumber());
+            stmt.setString(3, user.getPin());
             stmt.setDouble(4, user.getBalance());
+            stmt.setString(5, user.getRole());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,7 +62,7 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;  // Return null if user is not found
+        return null;
     }
 
     public void updateUserBalance(int userId, double newBalance) {
@@ -75,26 +76,29 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
-
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM users";
+
         try (Connection conn = DatabaseConfig.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
-                users.add(new User(
+                User user = new User(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("card_number"),
                         rs.getString("pin"),
                         rs.getDouble("balance"),
                         rs.getString("role")
-                ));
+                );
+                users.add(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return users;
     }
 }
