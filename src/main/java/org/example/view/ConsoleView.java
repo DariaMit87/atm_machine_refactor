@@ -2,6 +2,7 @@ package org.example.view;
 
 import org.example.controller.TransactionController;
 import org.example.controller.UserController;
+import org.example.model.ResourcesDAO;
 import org.example.model.Transaction;
 import org.example.model.User;
 import org.example.model.Resources;
@@ -11,9 +12,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleView {
-    private final UserController userController = new UserController();
-    private final TransactionController transactionController = new TransactionController();
-    private final ResourcesController resourcesController = new ResourcesController();  // Added ResourcesController to interact with resources
+    public UserController userController = new UserController();
+    public TransactionController transactionController = new TransactionController();
+    ResourcesDAO resourcesDAO = new ResourcesDAO();
+    public ResourcesController resourcesController = new ResourcesController(resourcesDAO); // Added ResourcesController to interact with resources
     private final Scanner scanner = new Scanner(System.in);
     private User loggedInUser;
 
@@ -257,8 +259,6 @@ public class ConsoleView {
             }
         }
     }
-
-
 }
 
 

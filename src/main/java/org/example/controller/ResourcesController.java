@@ -4,7 +4,11 @@ import org.example.model.Resources;
 import org.example.model.ResourcesDAO;
 
 public class ResourcesController {
-    private final ResourcesDAO resourcesDAO = new ResourcesDAO(); // Data access object to interact with resources table
+    private final ResourcesDAO resourcesDAO; // Data access object to interact with resources table
+
+    public ResourcesController(ResourcesDAO resourcesDAO) {
+        this.resourcesDAO = resourcesDAO;
+    }
 
     public Resources getResources() {
         return resourcesDAO.getResources();  // Fetch the resource data

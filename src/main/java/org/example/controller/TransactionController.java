@@ -1,16 +1,14 @@
 package org.example.controller;
 
-import org.example.model.Transaction;
-import org.example.model.TransactionDAO;
-import org.example.model.User;
-import org.example.model.UserDAO;
+import org.example.model.*;
+
 import java.util.List;
 
 public class TransactionController {
     private final TransactionDAO transactionDAO = new TransactionDAO();
     private final UserDAO userDAO = new UserDAO();
-    private final ResourcesController resourcesController = new ResourcesController();
-
+    ResourcesDAO resourcesDAO = new ResourcesDAO();  // Or a mock in tests
+    ResourcesController resourcesController = new ResourcesController(resourcesDAO);
 
     public boolean deposit(int userId, double amount) {
         User user = userDAO.getUserById(userId);
