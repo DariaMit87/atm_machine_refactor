@@ -10,8 +10,6 @@ CREATE TABLE users (
     balance DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
     role VARCHAR(20) CHECK (role IN ('customer', 'technician')) NOT NULL
 );
-
-
 CREATE TABLE transactions (
     id SERIAL PRIMARY KEY,
     userId INT REFERENCES users(id) ON DELETE CASCADE,
@@ -19,7 +17,6 @@ CREATE TABLE transactions (
     amount DECIMAL(10, 2) NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 CREATE TABLE resources (
     id SERIAL PRIMARY KEY,
     ink INT DEFAULT 100,

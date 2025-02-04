@@ -52,9 +52,9 @@ public class ConsoleView {
         if (loggedInUser != null) {
             System.out.println("Login successful. Welcome, " + loggedInUser.getName() + "!");
             if ("technician".equals(loggedInUser.getRole())) {
-                showTechnicianMenu();  // Show the technician menu if the role is technician
+                showTechnicianMenu();
             } else {
-                showUserMenu();  // Regular user menu
+                showUserMenu();
             }
         } else {
             System.out.println("Invalid credentials. Try again.");
@@ -112,7 +112,7 @@ public class ConsoleView {
             System.out.print("Select an option: ");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
