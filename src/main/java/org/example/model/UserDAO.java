@@ -5,7 +5,7 @@ import org.example.DatabaseConfig;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+//Data access object
 public class UserDAO {
     public void addUser(User user) {
         String query = "INSERT INTO users (name, card_number, pin, balance, role) VALUES (?, ?, ?, ?, ?)";

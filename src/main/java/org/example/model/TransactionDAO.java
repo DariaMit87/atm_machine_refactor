@@ -11,9 +11,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.ResultSet;
-
+//Data access object
 public class TransactionDAO {
-
     public void addTransaction(int userid, String type, double amount) {
         String query = "INSERT INTO transactions (userid, type, amount, timestamp) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConfig.getConnection();

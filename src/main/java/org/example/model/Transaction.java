@@ -9,7 +9,7 @@ public class Transaction {
     private double amount;
     private Timestamp timestamp;
 
-    // Constructor for retrieving transactions (with id)
+    // Constructor for retrieving transactions
     public Transaction(int id, int userid, String type, double amount, Timestamp timestamp) {
         this.id = id;
         this.userid = userid;
@@ -18,7 +18,7 @@ public class Transaction {
         this.timestamp = timestamp;
     }
 
-    // Constructor for inserting transactions (without id)
+    // Constructor for inserting transactions
     public Transaction(int userid, String type, double amount, Timestamp timestamp) {
         this.userid = userid;
         this.type = type;

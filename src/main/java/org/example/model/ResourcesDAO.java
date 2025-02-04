@@ -2,16 +2,16 @@ package org.example.model;
 import org.example.DatabaseConfig;
 
 import java.sql.*;
-
+//Data access object
 public class ResourcesDAO {
     public Resources getResources() {
-        String query = "SELECT * FROM resources WHERE id = 1";  // Assuming there's only one row
+        String query = "SELECT * FROM resources WHERE id = 1";
         try (Connection conn = DatabaseConfig.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
             if (rs.next()) {
-                Resources resources = new Resources(); // Initialize the Resources object
+                Resources resources = new Resources();
                 resources.setInk(rs.getInt("ink"));
                 resources.setPaper(rs.getInt("paper"));
                 resources.setCash(rs.getInt("cash"));
@@ -21,7 +21,7 @@ public class ResourcesDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null; // If no result found, return null
+        return null;
     }
 
     public void updateResources(Resources resources) {
@@ -40,7 +40,6 @@ public class ResourcesDAO {
         }
     }
 
-    // Refill resources to their default values
     public boolean refillResources() {
         String query = "UPDATE resources SET ink = 100, paper = 100, cash = 1000, software_update = 100 WHERE id = 1";
         try (Connection conn = DatabaseConfig.getConnection();
@@ -53,5 +52,4 @@ public class ResourcesDAO {
         }
         return false;
     }
-
 }

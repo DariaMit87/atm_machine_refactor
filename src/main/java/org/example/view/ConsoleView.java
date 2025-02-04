@@ -15,7 +15,7 @@ public class ConsoleView {
     public UserController userController = new UserController();
     public TransactionController transactionController = new TransactionController();
     ResourcesDAO resourcesDAO = new ResourcesDAO();
-    public ResourcesController resourcesController = new ResourcesController(resourcesDAO); // Added ResourcesController to interact with resources
+    public ResourcesController resourcesController = new ResourcesController(resourcesDAO);
     private final Scanner scanner = new Scanner(System.in);
     private User loggedInUser;
 
@@ -27,7 +27,7 @@ public class ConsoleView {
             System.out.print("Select an option: ");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             if (choice == 1) {
                 login();
@@ -73,7 +73,7 @@ public class ConsoleView {
             System.out.print("Select an option: ");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:

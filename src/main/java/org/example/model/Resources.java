@@ -14,7 +14,7 @@ public class Resources {
         this.softwareUpdate = 100;
     }
 
-    // Add a constructor to initialize all resources
+    // constructor to initialize all resources
     public Resources(int ink, int paper, double cash, int softwareUpdate) {
         this.ink = ink;
         this.paper = paper;
@@ -26,44 +26,33 @@ public class Resources {
     public int getInk() {
         return ink;
     }
-
     public void setInk(int ink) {
         this.ink = ink;
     }
-
     public int getPaper() {
         return paper;
     }
-
     public void setPaper(int paper) {
         this.paper = paper;
     }
-
     public double getCash() {
         return cash;
     }
-
     public void setCash(double cash) {
         this.cash = cash;
     }
-
     public int getSoftwareUpdate() {
         return softwareUpdate;
     }
-
     public void setSoftwareUpdate(int softwareUpdate) {
         this.softwareUpdate = softwareUpdate;
     }
 
-    // Method to check if any resource is below 20
     public boolean isLowOnResources() {
         return ink <= 20 || paper <= 20 || softwareUpdate <= 20 || cash <= 20;
     }
-
-    // Method to check if any resource has reached 0
     public boolean isOutOfResources() {
         return ink == 0 || paper == 0 || softwareUpdate == 0 || cash == 0;
     }
-
 }
 

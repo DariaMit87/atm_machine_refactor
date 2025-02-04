@@ -26,8 +26,6 @@ class UserIntegrationTest {
     void setUp() throws Exception {
         // Initialize the mock object
         userDAOMock = Mockito.mock(UserDAO.class);
-
-        // Create a new UserController
         userController = new UserController();
 
         // Use reflection to inject the mock DAO into the controller
@@ -39,22 +37,17 @@ class UserIntegrationTest {
 
     @Test
     public void testAuthenticateUser() throws Exception {
-        // Mock UserDAO
         UserDAO userDAOMock = Mockito.mock(UserDAO.class);
-
-        // Create a new UserController
         UserController userController = new UserController();
 
-        // Use reflection to set the private field 'userDAO' to our mock
+        // Use reflection to set the private field 'userDAO' to mock
         Field field = UserController.class.getDeclaredField("userDAO");
         field.setAccessible(true);
         field.set(userController, userDAOMock);
 
-        // Now we can mock methods on userDAOMock
         User mockedUser = new User(1, "John Doe", "123456", "1234", 1000.0, "customer");
         Mockito.when(userDAOMock.getUserById(1)).thenReturn(mockedUser);
 
-        // Now, test the method using the mock
         double balance = userController.checkBalance(1);
         assertEquals(1000.0, balance);
     }
@@ -88,7 +81,6 @@ class UserIntegrationTest {
         userController.addUser(name, cardNumber, pin, balance, role);
 
         // Assert
-        // We expect that addUser() should not be called when name is empty.
         verify(userDAOMock, times(0)).addUser(any(User.class));
     }
 
@@ -106,7 +98,7 @@ class UserIntegrationTest {
 
         // Assert
         assertEquals(500.0, balance);
-        verify(userDAOMock, times(1)).getUserById(userId); // Verify if DAO method was called
+        verify(userDAOMock, times(1)).getUserById(userId);
     }
 
     @Test
@@ -121,8 +113,8 @@ class UserIntegrationTest {
         double balance = userController.checkBalance(userId);
 
         // Assert
-        assertEquals(-1.0, balance); // Expecting -1 if the user is not found
-        verify(userDAOMock, times(1)).getUserById(userId); // Verify if DAO method was called
+        assertEquals(-1.0, balance);
+        verify(userDAOMock, times(1)).getUserById(userId);
     }
 
     @Test

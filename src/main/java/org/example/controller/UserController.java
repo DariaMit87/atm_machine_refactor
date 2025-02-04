@@ -57,6 +57,5 @@ public class UserController {
     public List<User> getAllUsers() {
         return userDAO.getAllUsers();
     }
-
 }
 

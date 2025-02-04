@@ -26,7 +26,6 @@ public class TransactionIntegrationTest {
             transactionDAOMock = Mockito.mock(TransactionDAO.class);
             resourcesControllerMock = Mockito.mock(ResourcesController.class);
 
-            // Create the TransactionController instance
             transactionController = new TransactionController();
 
             // Use reflection to inject mocks into the private fields of TransactionController
@@ -45,7 +44,6 @@ public class TransactionIntegrationTest {
 
     @Test
     public void testDepositSuccess() {
-        // Prepare mock data
         User user = new User(1, "John Doe", "123456", "1234", 1000.0, "customer");
         Mockito.when(userDAOMock.getUserById(1)).thenReturn(user);
 

@@ -8,7 +8,7 @@ public class User {
     private double balance;
     private String role;
 
-    // Constructor for retrieving users (with ID)
+    // Constructor for retrieving users
     public User(int id, String name, String cardNumber, String pin, double balance, String role) {
         this.id = id;
         this.name = name;
@@ -18,7 +18,7 @@ public class User {
         this.role = role;
     }
 
-    // Constructor for inserting new users (without ID)
+    // Constructor for inserting new users
     public User(String name, String cardNumber, String pin, double balance, String role) {
         this.name = name;
         this.cardNumber = cardNumber;
